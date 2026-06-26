@@ -14,7 +14,10 @@ spl_autoload_register(function ($class) {
 });
 
 require BASE_PATH . '/core/Router.php';
+
 require BASE_PATH . '/app/controllers/AuthController.php';
+
+require BASE_PATH . '/app/helpers/AuthHelper.php';
 
 $router = new Router();
 
@@ -28,19 +31,18 @@ $router->post('/login', function () use ($auth) {
     $auth->login();
 });
 
-$router->get('/dashboard', function () {
-    session_start();
-
-    if (!isset($_SESSION['user'])) {
-        header("Location: /login");
-        exit;
-    }
-
-    echo "Bem-vindo, " . $_SESSION['user']['name'];
-});
-
 $router->get('/logout', function () use ($auth) {
     $auth->logout();
+});
+
+$router->get('/dashboard', function () {
+
+    AuthHelper::check();
+
+    echo "<h2>Dashboard</h2>";
+    echo "Bem-vindo, " . $_SESSION['user']['name'];
+
+    echo "<br><br><a href='/logout'>Sair</a>";
 });
 
 $router->run();

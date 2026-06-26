@@ -2,12 +2,13 @@
 
 class AuthController
 {
+    private $authService;
 
-    private $fakeUser = [
-        'email' => 'admin@admin.com',
-        'password' => '123456',
-        'name' => 'Admin'
-    ];
+    public function __construct()
+    {
+        require_once BASE_PATH . '/app/services/AuthService.php';
+        $this->authService = new AuthService();
+    }
 
     public function loginForm()
     {
@@ -28,11 +29,10 @@ class AuthController
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
 
-        if (
-            $email === $this->fakeUser['email'] &&
-            $password === $this->fakeUser['password']
-        ) {
-            $_SESSION['user'] = $this->fakeUser;
+        $user = $this->authService->attemptLogin($email, $password);
+
+        if ($user) {
+            $_SESSION['user'] = $user;
 
             header("Location: /dashboard");
             exit;
