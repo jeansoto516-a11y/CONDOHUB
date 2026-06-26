@@ -4,13 +4,16 @@ class Router
 {
     private $routes = [];
 
-    // Método GET
     public function get($path, $callback)
     {
         $this->routes['GET'][$path] = $callback;
     }
 
-    // Método para executar rota
+    public function post($path, $callback)
+    {
+        $this->routes['POST'][$path] = $callback;
+    }
+
     public function run()
     {
         $method = $_SERVER['REQUEST_METHOD'];
