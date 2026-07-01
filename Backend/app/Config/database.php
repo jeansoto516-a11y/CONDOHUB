@@ -14,7 +14,7 @@ class Database
         $this->conn = null;
 
         try {
-            // 🔥 Aqui muda o driver: pgsql ao invés de mysql
+            
             $this->conn = new PDO(
                 "pgsql:host={$this->host};port={$this->port};dbname={$this->db_name}",
                 $this->username,
